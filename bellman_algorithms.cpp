@@ -82,7 +82,7 @@ double bellmanFord(std::shared_ptr<ListGraph> t_graph, int w_startowy, bool czy_
 
     std::string* sciezka = new std::string[t_graph->getW()]; //sciezka najkrotszej drogi
 
-    auto t_start = std::chrono::high_resolution_clock::now(); //start clock
+    auto t_start = std::chrono::high_resolution_clock::now(); //start pomiaru czasu
 
     int* d_sciezki = new int[t_graph->getW()]; //najkrotsza droga 
 
@@ -103,7 +103,7 @@ double bellmanFord(std::shared_ptr<ListGraph> t_graph, int w_startowy, bool czy_
             if (d_sciezki[u] + waga < d_sciezki[v]) { //porownanie starej drogi do nowej
                 d_sciezki[v] = d_sciezki[u] + waga; //jesli nowa droga jest krotsza zamienia
 
-                if (czy_wypisz) { //wypisze sciezke w zaleznosci od wyboru rodzaju testu
+                if (czy_wypisz) { //wypisze sciezke w zaleznosci od wyboru uzytkownika
 
                     sciezka[v].clear();
                     sciezka[v].append(sciezka[u] + std::to_string(u) + "->");
@@ -127,7 +127,7 @@ double bellmanFord(std::shared_ptr<ListGraph> t_graph, int w_startowy, bool czy_
             else if (d_sciezki[u] > nieskonczonosc/2) d_sciezki[u] = nieskonczonosc;
         }
     }
-    auto t_end = std::chrono::high_resolution_clock::now(); //stop clock
+    auto t_end = std::chrono::high_resolution_clock::now(); //koniec pomiaru czasu
 
     
     if (czy_wypisz) wypisz_wyniki(std::move(sciezka), std::move(d_sciezki), t_graph->getW(), w_startowy);
@@ -137,33 +137,31 @@ double bellmanFord(std::shared_ptr<ListGraph> t_graph, int w_startowy, bool czy_
 
 
 //bellmanFord macierz sasiedztwa
-//algorytm dziala analogicznie jak dla listy sasiedztwa
 double bellmanFord(std::shared_ptr<MatrixGraph> t_graph, int w_startowy, bool czy_wypisz) {
 
-    std::string* sciezka = new std::string[t_graph->getW()];
+    std::string* sciezka = new std::string[t_graph->getW()]; //sciezka najkrotszej drogi
 
-    auto t_start = std::chrono::high_resolution_clock::now();
+    auto t_start = std::chrono::high_resolution_clock::now(); //start pomiaru czasu
 
-    int* d_sciezki = new int[t_graph->getW()];
+    int* d_sciezki = new int[t_graph->getW()]; //najkrotsza droga
 
     for (int i = 0; i < t_graph->getW(); ++i) {
 
-        d_sciezki[i] = nieskonczonosc;
+        d_sciezki[i] = nieskonczonosc; //ustawia odleglosc poczatkowa na nieskonczonosc-ustalona na poczatku pliku bellman_algorithms.cpp
     }
 
-    d_sciezki[w_startowy] = 0;
+    d_sciezki[w_startowy] = 0; //odlegosc od wierzcholka startowego do niego samego ustawia na 0
 
-    for (int i = 1; i < t_graph->getW(); ++i) {
-        for (int j = 0; j < t_graph->getW(); ++j) {
+    for (int i = 1; i < t_graph->getW(); ++i) { //dla ilosc wierzcholkow -1
+        for (int j = 0; j < t_graph->getW(); ++j) { 
             for (int w = 0; w < t_graph->getW(); ++w) {
 
-                int u = j;
-                int v = w;
+                int u = j; 
+                int v = w; 
                 int waga = t_graph->getWeight(j, w);
-                if (d_sciezki[u] + waga < d_sciezki[v]) {
-
-                    d_sciezki[v] = d_sciezki[u] + waga;
-                    if (czy_wypisz) {
+                if (d_sciezki[u] + waga < d_sciezki[v]) { //porownanie starej drogi do nowej
+                    d_sciezki[v] = d_sciezki[u] + waga; //jesli nowa droga jest krotsza zamienia
+                    if (czy_wypisz) { //wypisze sciezke w zaleznosci od wyboru uzytkownika
 
                         sciezka[v].clear();
                         sciezka[v].append(sciezka[u] + std::to_string(u) + "->");
@@ -172,6 +170,7 @@ double bellmanFord(std::shared_ptr<MatrixGraph> t_graph, int w_startowy, bool cz
             }
         }
     }
+     //sprawdzanie czy istnieja negatywne cykle, ktore sa zabronione
     for (int i = 1; i < t_graph->getW(); ++i) {
         for (int j = 0; j < t_graph->getW(); ++j) {
             for (int w = 0; w < t_graph->getW(); ++w) {
@@ -189,9 +188,9 @@ double bellmanFord(std::shared_ptr<MatrixGraph> t_graph, int w_startowy, bool cz
             }
         }
     }
-    auto t_end = std::chrono::high_resolution_clock::now();
+    auto t_end = std::chrono::high_resolution_clock::now(); //koniec pomiaru czasu
 
     if (czy_wypisz) wypisz_wyniki(std::move(sciezka), std::move(d_sciezki), t_graph->getW(), w_startowy);
     delete[] d_sciezki;
-    return std::chrono::duration<double, std::milli>(t_end - t_start).count();
+    return std::chrono::duration<double, std::milli>(t_end - t_start).count(); //zwraca czas wykonania algorytmu
 }
