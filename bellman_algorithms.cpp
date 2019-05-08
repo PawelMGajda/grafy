@@ -129,7 +129,7 @@ double bellmanFord(std::shared_ptr<ListGraph> t_graph, int w_startowy, bool czy_
     }
     auto t_end = std::chrono::high_resolution_clock::now(); //stop clock
 
-    //prinitng solution if user wanted to
+    
     if (czy_wypisz) wypisz_wyniki(std::move(sciezka), std::move(d_sciezki), t_graph->getW(), w_startowy);
     delete[] d_sciezki;
     return std::chrono::duration<double, std::milli>(t_end - t_start).count(); //zwraca czas wykonania algorytmu
