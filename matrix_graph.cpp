@@ -4,7 +4,7 @@ static int nieskonczonosc = 1000000;
 
 static int pierwsza_losowa = -1; // do okreslenia jakie wartosci beda losowane, jest to pierwsza mozliwa do wylosowania liczba
 
-//constructor
+//konstruktor
 MatrixGraph::MatrixGraph(int s_wiercholek, double s_gestosc)
         : Graph(s_wiercholek, static_cast<int>(s_gestosc* s_wiercholek* (s_wiercholek - 1)), s_gestosc),
           matrix(std::make_unique<std::unique_ptr<int[]>[]>(s_wiercholek)) {
@@ -95,7 +95,7 @@ void MatrixGraph::wypisz_graf() const {
         else if (wiersz < 100) std::cout << wiersz << "  |";
         else std::cout << wiersz << " |";
 
-        //all connections in actual row
+        
         for (int kolumna = 0; kolumna < ilosc_wierzcholkow; ++kolumna) {
 
             int waga = matrix[wiersz][kolumna];
